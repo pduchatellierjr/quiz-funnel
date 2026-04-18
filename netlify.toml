@@ -1,6 +1,7 @@
 [build]
   command = "npm run build"
-  publish = ".next"
+  publish = ".next/public"
+  functions = ".next/server"
   skip_nx_cache = true
 
 [env]
