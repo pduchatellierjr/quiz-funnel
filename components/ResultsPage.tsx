@@ -60,24 +60,28 @@ export default function ResultsPage({ profile }: ResultsPageProps) {
             We specialize in creating {packageInfo.description.toLowerCase()} that becomes a treasured family memory. Let's talk about your vision and how we can preserve the feeling of your wedding.
           </p>
 
-          <form className="space-y-4" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
-            {/* Note: Replace with actual Formspree or email service */}
+          <form className="space-y-4" action="https://app.kit.com/forms/9342933/subscriptions" method="POST">
             <input
               type="hidden"
-              name="package"
+              name="fields[package]"
               value={profile.recommendedPackage}
             />
             <input
               type="hidden"
-              name="archetype"
+              name="fields[archetype]"
               value={profile.archetype}
+            />
+            <input
+              type="hidden"
+              name="fields[first_name]"
+              value={profile.name}
             />
 
             <div>
               <label className="block text-sm text-gray-400 mb-2">Your Email</label>
               <input
                 type="email"
-                name="email"
+                name="email_address"
                 defaultValue={profile.email}
                 readOnly
                 className="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded text-white"
@@ -88,7 +92,7 @@ export default function ResultsPage({ profile }: ResultsPageProps) {
               <label className="block text-sm text-gray-400 mb-2">Wedding Date (optional)</label>
               <input
                 type="date"
-                name="wedding_date"
+                name="fields[wedding_date]"
                 defaultValue={profile.weddingDate || ''}
                 className="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded text-white focus:outline-none focus:border-[#d4af37]"
               />
