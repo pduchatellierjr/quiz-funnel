@@ -154,4 +154,46 @@ describe('POST /api/submit-quiz', () => {
     expect(data.success).toBe(false);
     expect(data.errors.some((err: { field: string }) => err.field === 'name')).toBe(true);
   });
+
+  test('rejects invalid primaryFear value', async () => {
+    const payload = {
+      email: 'couple@example.com',
+      name: 'Jane & Mark',
+      primaryFear: 'invalid-fear',
+      planningStage: 'underway',
+      stylePreference: 75,
+    };
+
+    const response = await fetch(`${BASE_URL}/api/submit-quiz`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+
+    expect(response.status).toBe(400);
+    const data = await response.json();
+    expect(data.success).toBe(false);
+    expect(data.errors.some((err: { field: string }) => err.field === 'primaryFear')).toBe(true);
+  });
+
+  test('rejects invalid planningStage value', async () => {
+    const payload = {
+      email: 'couple@example.com',
+      name: 'Jane & Mark',
+      primaryFear: 'memories-fading',
+      planningStage: 'invalid-stage',
+      stylePreference: 75,
+    };
+
+    const response = await fetch(`${BASE_URL}/api/submit-quiz`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+
+    expect(response.status).toBe(400);
+    const data = await response.json();
+    expect(data.success).toBe(false);
+    expect(data.errors.some((err: { field: string }) => err.field === 'planningStage')).toBe(true);
+  });
 });

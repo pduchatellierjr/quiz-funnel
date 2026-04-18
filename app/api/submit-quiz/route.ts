@@ -3,6 +3,14 @@ import { calculateArchetype, assignPackage } from '@/lib/quiz-logic';
 import { insertQuizResponse } from '@/lib/db';
 import type { PrimaryFear, PlanningStage } from '@/types/quiz';
 
+// Valid enum values
+const VALID_PRIMARY_FEARS: PrimaryFear[] = ['memories-fading', 'wrong-videographer', 'generic-style', 'missed-moments', 'budget-pressure'];
+const VALID_PLANNING_STAGES: PlanningStage[] = ['just-engaged', 'underway', 'close-to-booking'];
+
+// Validate environment variables at module load time
+const zapierUrl = process.env.NEXT_PUBLIC_ZAPIER_WEBHOOK_URL;
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+
 // Validation function for email
 function validateEmail(email: string): boolean {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -42,11 +50,15 @@ function validateQuizResponse(body: ValidateQuizResponseInput): { valid: boolean
   // Validate primaryFear
   if (!body.primaryFear || typeof body.primaryFear !== 'string') {
     errors.push({ field: 'primaryFear', message: 'Primary fear is required' });
+  } else if (!VALID_PRIMARY_FEARS.includes(body.primaryFear as PrimaryFear)) {
+    errors.push({ field: 'primaryFear', message: 'Primary fear must be a valid option' });
   }
 
   // Validate planningStage
   if (!body.planningStage || typeof body.planningStage !== 'string') {
     errors.push({ field: 'planningStage', message: 'Planning stage is required' });
+  } else if (!VALID_PLANNING_STAGES.includes(body.planningStage as PlanningStage)) {
+    errors.push({ field: 'planningStage', message: 'Planning stage must be a valid option' });
   }
 
   // Validate stylePreference
@@ -103,10 +115,7 @@ export async function POST(request: NextRequest) {
     const responseId = response.id as string;
 
     // Trigger Zapier webhook (fire-and-forget)
-    const zapierUrl = process.env.NEXT_PUBLIC_ZAPIER_WEBHOOK_URL;
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
-
-    if (zapierUrl && baseUrl) {
+    if (zapierUrl) {
       fetch(zapierUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
