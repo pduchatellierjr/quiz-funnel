@@ -1,8 +1,9 @@
 [build]
   command = "npm run build"
-  publish = ".next/public"
-  functions = ".next/server"
   skip_nx_cache = true
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
 
 [env]
   [env.production]
