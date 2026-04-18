@@ -4,14 +4,15 @@ import { notFound } from 'next/navigation';
 import type { ResultsData } from '@/types/quiz';
 
 interface PageProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
 export default async function Results({ params }: PageProps) {
   try {
-    const data = await getQuizResponse(params.id);
+    const { id } = await params;
+    const data = await getQuizResponse(id);
 
     if (!data) {
       notFound();

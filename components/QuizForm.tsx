@@ -24,7 +24,7 @@ export default function QuizForm({ onSubmit, isLoading = false }: QuizFormProps)
     primaryFear?: PrimaryFear;
     planningStage?: PlanningStage;
     stylePreference?: number;
-  }>({});
+  }>({ stylePreference: 50 });
   const [adaptiveAnswers, setAdaptiveAnswers] = useState<Record<string, string>>({});
   const [personalInfo, setPersonalInfo] = useState({
     email: '',
