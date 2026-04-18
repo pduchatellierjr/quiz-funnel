@@ -8,8 +8,11 @@ interface ResultsPageProps {
 }
 
 export default function ResultsPage({ profile }: ResultsPageProps) {
-  const archetype = ARCHETYPES[profile.archetype];
-  const packageInfo = PACKAGES[profile.recommendedPackage];
+  // ARCHETYPES and PACKAGES lookups are guaranteed to have valid keys
+  // because the API endpoint (Task 7) validates archetype and recommendedPackage
+  // before storing in the database
+  const archetype = ARCHETYPES[profile.archetype]!;
+  const packageInfo = PACKAGES[profile.recommendedPackage]!;
 
   return (
     <div className="min-h-screen bg-black text-white p-6">
